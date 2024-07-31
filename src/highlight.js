@@ -285,10 +285,21 @@ function isHighlightJs(astGenerator) {
   return astGenerator && typeof astGenerator.highlightAuto !== 'undefined';
 }
 
+function isShiki(astGenerator) {
+  return (
+    astGenerator &&
+    typeof astGenerator.highlight === 'function' &&
+    astGenerator.highlight.constructor.name === 'AsyncFunction'
+  );
+}
+
 function getCodeTree({ astGenerator, language, code, defaultCodeValue }) {
-  // figure out whether we're using lowlight/highlight or refractor/prism
+  // figure out whether we're using shiki, lowlight/highlight or refractor/prism
   // then attempt highlighting accordingly
 
+  if (isShiki(astGenerator)) {
+    return astGenerator.highlight(code, { language });
+  }
   // lowlight/highlight?
   if (isHighlightJs(astGenerator)) {
     const hasLanguage = checkForListedLanguage(astGenerator, language);
@@ -354,7 +365,11 @@ export default function(defaultAstGenerator, defaultStyle) {
 
     const defaultPreStyle = style.hljs ||
       style['pre[class*="language-"]'] || { backgroundColor: '#fff' };
-    const generatorClassName = isHighlightJs(astGenerator) ? 'hljs' : 'prismjs';
+    const generatorClassName = isHighlightJs(astGenerator)
+      ? 'hljs'
+      : isShiki(astGenerator)
+      ? 'shiki'
+      : 'prismjs';
     const preProps = useInlineStyles
       ? Object.assign({}, rest, {
           style: Object.assign({}, defaultPreStyle, customStyle)

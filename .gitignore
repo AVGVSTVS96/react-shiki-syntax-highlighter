@@ -2,6 +2,7 @@ node_modules
 dist
 coverage
 demo/**/*.map
+demo/build
 
 .nvmrc
 .DS_Store

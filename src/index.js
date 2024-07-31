@@ -1,5 +1,7 @@
 export { default } from './default-highlight';
 
+export { default as Shiki } from './shiki';
+
 export { default as LightAsync } from './light-async';
 export { default as Light } from './light';
 
