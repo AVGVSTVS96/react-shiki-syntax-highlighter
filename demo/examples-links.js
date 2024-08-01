@@ -15,6 +15,10 @@ const ExamplesLinks = () => {
       path: './diff.html'
     },
     {
+      label: 'Shiki',
+      path: './shiki.html'
+    },
+    {
       label: 'Virtualized',
       path: './virtualized.html'
     },

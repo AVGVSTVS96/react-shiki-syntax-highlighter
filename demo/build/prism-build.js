@@ -109,6 +109,9 @@ var ExamplesLinks = function ExamplesLinks() {
     label: 'Diff',
     path: './diff.html'
   }, {
+    label: 'Shiki',
+    path: './shiki.html'
+  }, {
     label: 'Virtualized',
     path: './virtualized.html'
   }, {
