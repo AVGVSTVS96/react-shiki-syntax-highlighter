@@ -1,13 +1,24 @@
-import * as shiki from 'shiki';
+import { codeToTokens } from 'shiki';
 
 export function createShikiHighlighter() {
   return {
-    highlight: async (code, { language, theme }) => {
-      const { tokens } = await shiki.codeToTokens(code, {
-        lang: language,
-        theme: theme || 'github-dark'
-      });
-      return adaptShikiTokens(tokens);
+    highlight: async (code, options) => {
+      console.log('Shiki highlight called with options:', options);
+      try {
+        console.log('Attempting to call codeToTokens');
+        const { tokens } = await codeToTokens(code, {
+          lang: options.language || 'javascript',
+          theme: options.theme || 'github-dark'
+        });
+        console.log('codeToTokens successful, tokens:', tokens);
+        return adaptShikiTokens(tokens);
+      } catch (error) {
+        console.error('Detailed error in Shiki highlighting:', error);
+        console.error('Error name:', error.name);
+        console.error('Error message:', error.message);
+        console.error('Error stack:', error.stack);
+        return { type: 'root', children: [{ type: 'text', value: code }] };
+      }
     }
   };
 }
@@ -23,8 +34,7 @@ function adaptShikiTokens(shikiTokens) {
         type: 'element',
         tagName: 'span',
         properties: {
-          className: [token.fontStyle, `color-${token.color.slice(1)}`],
-          style: { color: token.color }
+          className: ['token']
         },
         children: [{ type: 'text', value: token.content }]
       }))

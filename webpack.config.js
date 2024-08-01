@@ -59,6 +59,10 @@ module.exports = {
           }
         }
       },
+      {
+        test: /\.wasm$/,
+        type: 'webassembly/experimental'
+      },
       { test: /\.css$/, use: ['style-loader', 'css-loader'] }
     ]
   },
@@ -71,9 +75,6 @@ module.exports = {
     })
   ],
   resolve: {
-    alias: {
-      'shiki/wasm': path.resolve(__dirname, 'src/mocks/shiki-wasm.js')
-    },
     extensions: ['.js', '.mjs', '.json']
   }
 };
