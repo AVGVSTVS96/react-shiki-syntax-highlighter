@@ -2,8 +2,10 @@ module.exports = {
   plugins: [
     '@babel/plugin-proposal-class-properties',
     '@babel/plugin-proposal-object-rest-spread',
-    '@babel/syntax-dynamic-import',
-    '@babel/transform-runtime'
+    '@babel/plugin-syntax-dynamic-import',
+    '@babel/plugin-transform-runtime',
+    '@babel/plugin-proposal-optional-chaining',
+    '@babel/plugin-proposal-nullish-coalescing-operator'
   ],
   presets: ['@babel/react', '@babel/env'],
   env: {

@@ -1,4 +1,5 @@
 var path = require('path');
+const { alias } = require('refractor');
 var webpack = require('webpack');
 
 module.exports = {
@@ -44,16 +45,34 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js?$/,
-        loader: 'babel-loader',
-        exclude: [/node_modules/]
+        test: /\.m?js$/,
+        exclude: /node_modules\/(?!(shiki|@shikijs)\/).*/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env', '@babel/preset-react'],
+            plugins: [
+              '@babel/plugin-proposal-optional-chaining',
+              '@babel/plugin-proposal-nullish-coalescing-operator'
+            ]
+          }
+        }
       },
-      { test: /\.css$/, loader: 'style!css' }
+      { test: /\.css$/, use: ['style-loader', 'css-loader'] }
     ]
   },
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production')
+    }),
+    new webpack.ProvidePlugin({
+      process: 'process/browser'
     })
-  ]
+  ],
+  resolve: {
+    alias: {
+      'shiki/wasm': path.resolve(__dirname, 'src/mocks/shiki-wasm.js')
+    },
+    extensions: ['.js', '.mjs', '.json']
+  }
 };

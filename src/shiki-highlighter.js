@@ -1,9 +1,9 @@
-import { codeToTokens } from 'shiki';
+import * as shiki from 'shiki';
 
 export function createShikiHighlighter() {
   return {
     highlight: async (code, { language, theme }) => {
-      const { tokens } = await codeToTokens(code, {
+      const { tokens } = await shiki.codeToTokens(code, {
         lang: language,
         theme: theme || 'github-dark'
       });
